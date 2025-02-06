@@ -1,0 +1,53 @@
+import React, { useContext, useEffect, useState } from "react"
+import { BasketContext } from "../components/BasketContext"
+
+export default function Basket(){
+    const { basket } = useContext(BasketContext)
+    const newBasket = [...new Set( // This is the basket with duplicate objects removed
+        basket.map(
+            item => JSON.stringify(item)))
+        ].map(item => JSON.parse(item))
+    const counter = {}
+
+    basket.forEach(item => {
+        counter[item._id] ? counter[item._id] += 1 : counter[item._id] = 1
+    })
+
+    return (
+        <>
+        <div className="basketBody">
+            <div className="basketContainer">
+                <div className="basketRow">
+                    <div className="basketCol1">
+                    <div className="basketTitle">
+                        <h1>Basket Items</h1>
+                    </div>
+                    <ul className="basketList">
+                        {newBasket.map(products => (
+                            <li key={products._id}>
+                                <a href={`/store/${products._id}`} className="basketItem">
+                                    <img src={products.image_path} alt={`${products.product_name}`} className="basketImage"/>
+                                </a>
+                                <br/>
+                                <br/>
+                                <a href={`/store/${products._id}`} className="basketLink">{products.product_name}</a>
+                                <p className="basketItemPrice">£{(products.price/100).toFixed(2)}</p>
+                                <br/>
+                                <br/>
+                                <p>Quantity: {counter[products._id]}</p>
+                            </li>
+                        ))}
+                    </ul>
+                    </div>
+                    <div className="basketCol2">
+                        <br/>
+                        <div className="basketBreakCol1">
+                            <p>hello</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </>
+    )
+}
