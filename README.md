@@ -28,4 +28,4 @@ Backend - NodeJS
 
 You must run it by npm start in the /front directory and /server directory separately.
 
-The /front/node_modules directory is too large to be uploaded therefore you must generate your own during the setup process of npm reactjs
+The /front/node_modules and /server/node_modules directory is too large to be uploaded therefore you must generate your own during the setup process of npm reactjs
