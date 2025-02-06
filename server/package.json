@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "body-parser": "^1.20.3",
+    "cookie": "^1.0.2",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "env": "^0.0.2",
+    "express": "^4.21.1",
+    "fast-luhn": "^2.0.2",
+    "luhn": "^2.4.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.7.2",
+    "otpauth": "^9.3.4",
+    "uuid": "^11.0.3"
+  }
+}
