@@ -5,12 +5,37 @@ on:
 
 jobs:
   test_push:
+    name: Testing
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout code
+        uses: actions/checkout@v2 # Used to 
+
+      - name: NodeJS setup
+        uses: actions/setup-node@v1 # Set up nodejs
         with:
-          node-version: 12
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+          # LTS version
+          node-version: 22 
+          
+      - name: Super-linter
+        uses: super-linter/super-linter@v7.4.0 # x-release-please-version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Frontend setup
+        # Switch to frontend directory
+        working-directory: ./front
+        run: npm ci
+        
+      - name: Build frontend
+        working-directory: ./front
+        run: npm run build
+        
+      - name: Backend setup
+        working-directory: ./server
+        run: npm ci
+
+      - name: Build backend
+        working-directory: ./server
+        run: npm run build
+      
