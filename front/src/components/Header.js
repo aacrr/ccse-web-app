@@ -24,19 +24,18 @@ export default function Header(){
     }
 }
 
-const getBasketTotal = async () => {
-  let basket_total = 0
-  basket.forEach(item => (
-    basket_total += item.quantity
-  ))
-  setBasketTotal(basket_total)
-}
-
 useEffect(()=> {
   checkVerified()
 }, [verified])
 
 useEffect(()=> {
+    const getBasketTotal = async () => {
+    let basket_total = 0
+    basket.forEach(item => (
+      basket_total += item.quantity
+    ))
+    setBasketTotal(basket_total)
+  }
   getBasketTotal()
 }, [basket])
 
