@@ -1,10 +1,10 @@
 import React, {useContext, useEffect, useState} from "react"
 import { BasketContext } from "../components/BasketContext"
 import { useNavigate } from "react-router-dom"
+import luhn from 'luhn'
 
 export default function Checkout() {
     const nav = useNavigate()
-    const luhn = require('luhn')
     const { basket } = useContext(BasketContext)
     const { dispatch } = useContext(BasketContext)
     const [basketItems, setBasketItems] = useState([])
@@ -32,9 +32,7 @@ export default function Checkout() {
     const [sameAddressCheckbox, setSameAddressCheckbox] = useState(false)
 
     const [cardNumber, setCardNumber] = useState('')
-    const [cardHolderName, setCardHolderName] = useState('')
     const [cardExpiryDate, setCardExpiryDate] = useState('')
-    const [cardCVV, setCardCVV] = useState('')
 
     const fetchPubKey = async() => {
         await fetch('https://localhost:8141/api/pubkey')
@@ -143,20 +141,8 @@ export default function Checkout() {
 
     }
 
-    const fetchBasketData = async() => {
-        const fetchAll = basket.map(prod => 
-            fetch(`https://localhost:8141/products/${prod.product_id}`)
-            .then(resp => resp.json())
-        )
-        setBasketItems(await Promise.all(fetchAll))
-    }
-
-    const checkEmptyBasket = async() => {
-        if (basketItems.length === 0 && basket.length === 0){
-            // Redirect to basket if there is no items in the basket
-            nav('/basket')
-        }
-    }
+    
+    
 
 
     // Function sets the shipping address to billing address if chosen
@@ -169,82 +155,95 @@ export default function Checkout() {
         }
     }
 
-
-    // This function checks if a card number is valid using luhns algorithm
-    const handleCard = async() => {
-        setValidCard(luhn.validate(cardNumber.toString().trim()))
-        if (cardNumber){
-            if (validCard && cardNumber.length === 16){
-                setCardErrorMessage('')
-            } else {
-                setCardErrorMessage('Card number is invalid.')
-            }
-        } else {
-            setCardErrorMessage('')
-        }
-    }
-
-
-    // Function validates the name input field ensuring that it contains alphabetical characters
-    const handleName = async() => {
-        let eMessage = "Names must only contain alphabetical characters."
-        if (firstName || lastName){
-            if (firstName.match(/[^a-zA-Z]/g) || lastName.match(/[^a-zA-Z]/g)){
-                setErrorMessage((errorMessage) => {
-                    if (!errorMessage.includes(eMessage)){
-                        return [...errorMessage, eMessage]
-                    }
-                    return errorMessage
-                })
-            } else {
-                setErrorMessage((errorMessage) => errorMessage.filter((msg) => msg !== eMessage))
-                setValidName(true)
-            }
-        } else {
-            setErrorMessage((errorMessage) => errorMessage.filter((msg) => msg !== eMessage))
-            setValidName(true)
-        }
-    }
-    
-    // Function validates email address inputted using regex
-    const handleEmail = async() => {
-        if (email){
-            if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) && !errorMessage.includes("Email is not valid.")){
-                setErrorMessage([...errorMessage, "Email is not valid."])
-                setValidEmail(false)
-            } else {
-                setErrorMessage([...errorMessage.filter(i => i !== "Email is not valid.")])
-                setValidEmail(true)
-            }
-        } else {
-            setErrorMessage([...errorMessage.filter(i => i !== "Email is not valid.")])
-            setValidEmail(false)
-        }
-    }
-
-
-
     // Use effect updates when there is changes to the state in []
     useEffect(() => {
+        const fetchBasketData = async() => {
+        const fetchAll = basket.map(prod => 
+            fetch(`https://localhost:8141/products/${prod.product_id}`)
+            .then(resp => resp.json())
+        )
+        setBasketItems(await Promise.all(fetchAll))
+        }
+
+        
+        const checkEmptyBasket = async() => {
+            if (basketItems.length === 0 && basket.length === 0){
+                // Redirect to basket if there is no items in the basket
+                nav('/basket')
+            }
+        }   
+
         if (basketItems.length === 0 && basket.length > 0){
             fetchBasketData()
         }
         checkEmptyBasket()
-    }, [basket])
+    }, [basket, basketItems.length, nav])
 
     useEffect(() => {
         checkVerified()
     }, [verified])
 
     useEffect(() => {
+        // Function validates the name input field ensuring that it contains alphabetical characters
+    const handleName = async() => {
+        let eMessage = "Names must only contain alphabetical characters."
+            if (firstName || lastName){
+                if (firstName.match(/[^a-zA-Z]/g) || lastName.match(/[^a-zA-Z]/g)){
+                    setErrorMessage((errorMessage) => {
+                        if (!errorMessage.includes(eMessage)){
+                            return [...errorMessage, eMessage]
+                        }
+                        return errorMessage
+                    })
+                } else {
+                    setErrorMessage((errorMessage) => errorMessage.filter((msg) => msg !== eMessage))
+                    setValidName(true)
+                }
+            } else {
+                setErrorMessage((errorMessage) => errorMessage.filter((msg) => msg !== eMessage))
+                setValidName(true)
+            }
+        }
+
         handleName()
     }, [firstName, lastName])
 
     useEffect(() => {
+        // Function validates email address inputted using regex
+        const handleEmail = async() => {
+            if (email){
+                if (!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g) && !errorMessage.includes("Email is not valid.")){
+                    setErrorMessage([...errorMessage, "Email is not valid."])
+                    setValidEmail(false)
+                } else {
+                    setErrorMessage([...errorMessage.filter(i => i !== "Email is not valid.")])
+                    setValidEmail(true)
+                }
+            } else {
+                setErrorMessage([...errorMessage.filter(i => i !== "Email is not valid.")])
+                setValidEmail(false)
+            }
+        }
+
         handleEmail()
-    }, [email])
+    }, [email, errorMessage])
 
     useEffect(() => {
+        // This function checks if a card number is valid using luhns algorithm
+        const handleCard = async() => {
+            const isValid = luhn.validate(cardNumber.toString().trim())
+            setValidCard(isValid)
+            if (cardNumber){
+                if (isValid && cardNumber.length === 16){
+                    setCardErrorMessage('')
+                } else {
+                    setCardErrorMessage('Card number is invalid.')
+                }
+            } else {
+                setCardErrorMessage('')
+            }
+        }
+
         handleCard()
     }, [cardNumber])
 
@@ -365,7 +364,7 @@ export default function Checkout() {
                                 </p>
                                 <p>
                                     <label>Holder Name</label>
-                                    <input className="cardHolderName" placeholder="John Doe" onChange={e => setCardHolderName(e.target.value)} required/>
+                                    <input className="cardHolderName" placeholder="John Doe" required/>
                                 </p>
                                 <p>
                                     <label>Expiry Date</label>
@@ -373,7 +372,7 @@ export default function Checkout() {
                                 </p>
                                 <p>
                                     <label>CVV</label>
-                                    <input className="cardCVV" placeholder="333" maxLength={3} onChange={e => setCardCVV(e.target.value)} required/>
+                                    <input className="cardCVV" placeholder="333" maxLength={3} required/>
                                 </p>
 
                             </div>
