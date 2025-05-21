@@ -54,33 +54,6 @@ export default function Register(){
 
     }
 
-    // Enforces password requirements using regex and length checking
-    const handlePassword = async() => {
-        if (password.length < 7) {
-            setPassErrorMessage('Minimum 8 characters, 1 lowercase, 1 uppercase and 1 special character.')
-            setValidPassword(false)
-        } else if (/[A-Z]/g.test(password) && /[a-z]/g.test(password) && /[^A-Za-z0-0]/g){ // Checks if special characters are in the password
-            setPassErrorMessage('')
-            setValidPassword(true)
-        }
-    }
-    
-    // Checks if email is valid using regex
-    const handleEmail = async() => {
-        if (email){
-            if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)){
-                setEmailErrorMessage("Email is not valid.")
-                setValidEmail(false)
-            } else {
-                setEmailErrorMessage('')
-                setValidEmail(true)
-            }
-        } else {
-            setEmailErrorMessage('')
-            setValidEmail(false)
-        }
-    }
-
     const submitRegister = async() => {
         if (validEmail && validPassword && firstName && lastName && username && email && phoneNumber && password && dob){
             const encrypted_first_name = await encryptData(firstName)
@@ -119,10 +92,37 @@ export default function Register(){
 
     // Execute commands if values change in []
     useEffect(() => {
+        // Enforces password requirements using regex and length checking
+        const handlePassword = async() => {
+            if (password.length < 7) {
+                setPassErrorMessage('Minimum 8 characters, 1 lowercase, 1 uppercase and 1 special character.')
+                setValidPassword(false)
+            } else if (/[A-Z]/g.test(password) && /[a-z]/g.test(password) && /[^A-Za-z0-0]/g){ // Checks if special characters are in the password
+                setPassErrorMessage('')
+                setValidPassword(true)
+            }
+        }
+
         handlePassword()
     }, [password])
 
     useEffect(() => {
+        // Checks if email is valid using regex
+        const handleEmail = async() => {
+            if (email){
+                if (!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)){
+                    setEmailErrorMessage("Email is not valid.")
+                    setValidEmail(false)
+                } else {
+                    setEmailErrorMessage('')
+                    setValidEmail(true)
+                }
+            } else {
+                setEmailErrorMessage('')
+                setValidEmail(false)
+            }
+        }
+
         handleEmail()
     }, [email])
 
