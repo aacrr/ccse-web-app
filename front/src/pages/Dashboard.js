@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react"
-import { json } from "react-router-dom"
 export default function Dashboard() {
     const [verified, setVerified] = useState(false)
-    const [userID, setUserID] = useState('')
     const [orders, setOrders] = useState([])
 
     const [firstName, setFirstName] = useState('')
@@ -31,7 +29,6 @@ export default function Dashboard() {
         try {
             if (json_response.role === 'customer'){
                 setVerified(true)
-                setUserID(json_response.userID)
             } else {
                 setVerified(false)
             }
@@ -131,22 +128,6 @@ export default function Dashboard() {
         } 
         
     }
-
-    // Checking if email inputted is valid
-    const handleEmail = async() => {
-        if (email){
-            if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)){
-                setErrorMessage("Email is not valid.")
-                setValidEmail(false)
-            } else {
-                setErrorMessage('')
-                setValidEmail(true)
-            }
-        } else {
-            setErrorMessage('')
-            setValidEmail(false)
-        }
-    }
     
     useEffect(() => {
         checkVerified()
@@ -160,6 +141,22 @@ export default function Dashboard() {
     
 
     useEffect(() => {
+        // Checking if email inputted is valid
+        const handleEmail = async() => {
+            if (email){
+                if (!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)){
+                    setErrorMessage("Email is not valid.")
+                    setValidEmail(false)
+                } else {
+                    setErrorMessage('')
+                    setValidEmail(true)
+                }
+            } else {
+                setErrorMessage('')
+                setValidEmail(false)
+            }
+        }
+
         handleEmail()
     }, [email])
 
