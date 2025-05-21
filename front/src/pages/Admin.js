@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react" 
 
 export default function Admin() {
-    const [verified, setVerified] = useState(false) 
-    const [userID, setUserID] = useState('') 
+    const [verified, setVerified] = useState(false)
     const [orders, setOrders] = useState([]) 
     const [users, setUsers] = useState([])
     const [products, setProducts] = useState([])
@@ -30,8 +29,7 @@ export default function Admin() {
         try {
             const json_response = await response.json() 
             if (json_response.role === 'administrator') {
-                setVerified(true) 
-                setUserID(json_response.userID) 
+                setVerified(true)
             } else {
                 setVerified(false) 
             }
@@ -196,21 +194,7 @@ export default function Admin() {
     }
 
 
-    // Checks if an email is valid 
-    const handleEmail = async() => {
-        if (email){
-            if (!email.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)){
-                setErrorMessage("Email is not valid.")
-                setValidEmail(false)
-            } else {
-                setErrorMessage('')
-                setValidEmail(true)
-            }
-        } else {
-            setErrorMessage('')
-            setValidEmail(false)
-        }
-    }
+    
 
 
     useEffect(() => {
@@ -226,6 +210,22 @@ export default function Admin() {
     }, [verified]) 
 
     useEffect(() => {
+        // Checks if an email is valid 
+        const handleEmail = async() => {
+            if (email){
+                if (!email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)){
+                    setErrorMessage("Email is not valid.")
+                    setValidEmail(false)
+                } else {
+                    setErrorMessage('')
+                    setValidEmail(true)
+                }
+            } else {
+                setErrorMessage('')
+                setValidEmail(false)
+            }
+        }
+
         handleEmail()
     }, [email])
 
