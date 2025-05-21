@@ -6,19 +6,15 @@ export default function ProductInfo (){
     const params = useParams()
 
     useEffect(() =>{
+        const fetchProdData = async() => {
+            await fetch(`https://localhost:8141/products/${params.id}`)
+            .then(resp => resp.json())
+            .then(data => setProduct(data))
+        }
+
         fetchProdData()
-    }, [])
+    }, [params.id])
 
-    const fetchProdData = async() => {
-        await fetch(`https://localhost:8141/products/${params.id}`)
-        .then(resp => resp.json())
-        .then(data => setProduct(data))
-        
-    }
-
-
-
-    // Should use database here!!
     return(
         <>
             <div className="productInfoBody">
