@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header';
 import Basket from './pages/Basket';
@@ -30,7 +29,7 @@ function App() {
     <BasketConProvider> 
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}> // Wraps each page with layout function
+          <Route path="/" element={<Layout />}>
             <Route path="/" element={<Home />}/>
             <Route path="/store" element={<Store />}/>
             <Route path="/store/:id" element={<ProductInfo />}/>
