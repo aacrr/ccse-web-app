@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@v2 # used to
 
       - name: NodeJS setup
-        uses: action/setup-node@v4 # Setup nodejs
+        uses: actions/setup-node@v4 # Setup nodejs
         with:
         # LTS Version
           node-version: 22
