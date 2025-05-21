@@ -53,6 +53,7 @@ const BasketReducer = (basket, action) => {
                 sendToBasket([...basket])
                 return [...basket]
             }
+            break
         case "remove_from_basket":
             sendToBasket([...basket.filter(i => i.product_id !== action.product)])
             return [...basket.filter(i => i.product_id !== action.product)]
@@ -73,6 +74,7 @@ const BasketReducer = (basket, action) => {
                 sendToBasket([...basket])
                 return [...basket]
             }
+            break
         case "clear_basket":
             sendToBasket([])
             return []
