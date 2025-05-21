@@ -4,24 +4,29 @@ on:
   push:
 
 jobs:
-  test_push:
-    name: Testing
+  lint:
+    name: Linter
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2 # Used to 
-
-      - name: NodeJS setup
-        uses: actions/setup-node@v1 # Set up nodejs
-        with:
-          # LTS version
-          node-version: 22 
-          
+        uses: actions/checkout@v2
       - name: Super-linter
         uses: super-linter/super-linter@v7.4.0 # x-release-please-version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+  build:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2 # used to
+
+      - name: NodeJS setup
+        uses: action/setup-node@v1 # Setup nodejs
+        with:
+        # LTS Version
+          node-version: 22
+
       - name: Frontend setup
         # Switch to frontend directory
         working-directory: ./front
@@ -30,7 +35,7 @@ jobs:
       - name: Build frontend
         working-directory: ./front
         run: npm run build
-        
+
       - name: Backend setup
         working-directory: ./server
         run: npm ci
@@ -38,4 +43,4 @@ jobs:
       - name: Build backend
         working-directory: ./server
         run: npm run build
-      
+          
