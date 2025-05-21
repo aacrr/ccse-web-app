@@ -8,19 +8,19 @@ export default function Basket(){
     const { dispatch } = useContext(BasketContext)
     const [basketItems, setBasketItems] = useState([]) // This is the basket but with product information
 
-    const fetchBasketData = async() => {
+    useEffect(() => {
+        const fetchBasketData = async() => {
         const fetchAll = basket.map(item => 
             fetch(`https://localhost:8141/products/${item.product_id}`) // Gets product info from basket
             .then(resp => resp.json())                                  // so that images, price and product name appear
         )
         setBasketItems(await Promise.all(fetchAll))
-    }
+        }   
 
-    useEffect(() => {
         if (basketItems.length === 0 && basket.length > 0){
             fetchBasketData() // Fetches basket data if there are items in the basket and not in basketItems
         }
-    }, [basket])
+    }, [basket, basketItems.length])
 
     let totalPrice = 0
     
