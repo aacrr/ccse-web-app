@@ -39,7 +39,7 @@ export default function Store(){
                                 </a>
                                 <br/>
                                 <a href={`/store/${products._id}`} className="productLink">{products.product_name}</a>
-                                <a className="productPrice">£{(products.price/100).toFixed(2)}</a>
+                                <span className="productPrice">£{(products.price/100).toFixed(2)}</span>
                                 <br/>
                                 <br/>
                                 <button className="addBasket" onClick={()=> 
