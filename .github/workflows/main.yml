@@ -49,4 +49,4 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        args: test ./server
+        args: test ./server --json
