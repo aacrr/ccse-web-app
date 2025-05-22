@@ -44,9 +44,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Run Snyk
-      uses: snyk/actions/node@master
-      env:
-        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-      with:
-        args: test ./server
+    
+    - name: Install Snyk
+      run: npm install -g snyk
+    - name: Auth snyk
+      run: snyk auth "${{ secrets.SNYK_TOKEN }}"
+      
+    - name: Run snyk
+      working-directory: ./server
+      run: snyk test
