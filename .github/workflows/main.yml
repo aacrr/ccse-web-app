@@ -52,4 +52,16 @@ jobs:
       
     - name: Run snyk
       working-directory: ./server
-      run: snyk test
+      run: snyk test --all-projects
+
+  is-node-vulnerable:
+    name: Common vulnerabilities check
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check NodeJS
+      uses: nodejs/is-my-node-vulnerable@v1
+      with:
+        node-version: "22.15.0"
+        platform: "linux"
+  
