@@ -51,5 +51,4 @@ jobs:
       run: snyk auth "${{ secrets.SNYK_TOKEN }}"
       
     - name: Run snyk
-      working-directory: ./server
       run: snyk test --all-projects
