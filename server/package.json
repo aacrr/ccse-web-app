@@ -19,7 +19,7 @@
     "express": "^4.21.1",
     "fast-luhn": "^2.0.2",
     "luhn": "^2.4.1",
-    "mongodb": "^6.10.0",
+    "mongodb": "^6.16.0",
     "mongoose": "^8.7.2",
     "otpauth": "^9.3.4",
     "uuid": "^11.0.3"
