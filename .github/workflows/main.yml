@@ -3,6 +3,10 @@ name: CICD Pipeline
 on:
   push:
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   lint:
     name: Linter
