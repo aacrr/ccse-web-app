@@ -25,8 +25,8 @@ mongoose.connect(process.env.DB_URI, {
 })
 .then(() => console.log("Database has connected successfully"))
 
-const privateKey = fs.readFileSync('.cert/key.pem', 'utf8')
-const certificate = fs.readFileSync('.cert/cert.pem', 'utf8')
+const privateKey = fs.readFileSync('cert/key.pem', 'utf8')
+const certificate = fs.readFileSync('cert/cert.pem', 'utf8')
 
 
 const serverPort = process.env.PORT // Hides port number used
