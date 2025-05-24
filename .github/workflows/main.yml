@@ -91,4 +91,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'https://host.docker.internal:3000/'
-          cmd_options: '-a --ignore-ssl-errors'
+          cmd_options: '-a'
