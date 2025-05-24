@@ -77,11 +77,11 @@ jobs:
 
       - name: Start backend
         working-directory: ./server
-        run: nohup npm start
+        run: nohup npm start &
 
       - name: Start frontend
         working-directory: ./front
-        run: nohup npm start
+        run: nohup npm start &
           
       - name: ZAP scan
         uses: zaproxy/action-full-scan@v0.12.0
