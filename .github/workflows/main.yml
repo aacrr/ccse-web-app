@@ -71,6 +71,10 @@ jobs:
         working-directory: ./front
         run: npm ci
 
+      - name: Create .env file
+        working-directory: ./server
+        run: echo "DB_URI=${{ secrets.DB_URI }}" >> .env && echo "PORT=${{ secrets.PORT }}" >> .env
+
       - name: Start backend
         working-directory: ./server
         run: nohup npm start
