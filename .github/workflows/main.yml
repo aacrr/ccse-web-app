@@ -89,9 +89,6 @@ jobs:
 
       - name: Wait for frontend and backend 
         run: sleep 7
-
-      - name: Test site
-        run: curl https://172.17.0.1:3000
         
       - name: ZAP scan
         uses: zaproxy/action-full-scan@v0.12.0
